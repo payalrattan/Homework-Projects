@@ -1,100 +1,25 @@
-const data = {
-    movies: [
-        {
-            id: 1,
-            title: 'Interstellar',
-            description:
-                'The adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage.',
-            movie_year: 2014,
-            director: "Christopher Nolan",
-            actors: ["Matthew McConaughey", "Anne Hathaway", "Jessica Chastain", "Michael Caine", "Casey Affleck", "Mackenzie Foy", "John Lithgow", "Ellen Burstyn", "Matt Damon"],
-            poster_url: 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
-            price: '120.00',
-        },
-
-        {
-            id: 2,
-            title: "Inception",
-            description: "A thief who enters people's dreams to steal secrets must pull off the ultimate heist.",
-            movie_year: 2010,
-            director: "Christopher Nolan",
-            actors: ["Leonardo DiCaprio", "Joseph Gordon-Levitt", "Ellen Page", "Tom Hardy", "Cillian Murphy", "Ken Watanabe", "Marion Cotillard", "Michael Caine"],
-            poster_url: "https://i.ebayimg.com/00/s/MTYwMFgxMDk3/z/LlUAAOSwm8VUwoRL/$_57.JPG?set_id=880000500F",
-            price: "100.00"
-        },
-
-        {
-            id: 3,
-            title: "The Matrix",
-            description: "A hacker discovers the reality he knows is a simulation and fights to break free.",
-            movie_year: 1999,
-            director: "Lana Wachowski, Lilly Wachowski",
-            actors: ["Keanu Reeves", "Laurence Fishburne", "Carrie-Anne Moss", "Hugo Weaving", "Joe Pantoliano"],
-            poster_url: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",
-            price: "90.00"
-        },
-        {
-            id: 4,
-            title: "Titanic",
-            description: "A love story unfolds on the ill-fated Titanic as it sails towards disaster.",
-            movie_year: 1997,
-            director: "James Cameron",
-            actors: ["Leonardo DiCaprio", "Kate Winslet", "Billy Zane", "Kathy Bates", "Frances Fisher", "Bill Paxton", "Gloria Stuart"],
-            poster_url: "https://i.ebayimg.com/images/g/gnEAAOSwP~tW4HMS/s-l1200.jpg",
-            price: "95.00"
-        },
-        {
-            id: 5,
-            title: "Lost",
-            description: "A thief who enters people's dreams to steal secrets must pull off the ultimate heist.",
-            movie_year: 2010,
-            director: "Christopher Nolan",
-            actors: ["Leonardo DiCaprio", "Joseph Gordon-Levitt", "Ellen Page", "Tom Hardy", "Cillian Murphy", "Ken Watanabe", "Marion Cotillard", "Michael Caine"],
-            poster_url: "https://i.ebayimg.com/00/s/MTYwMFgxMDk3/z/LlUAAOSwm8VUwoRL/$_57.JPG?set_id=880000500F",
-            price: "100.00"
-        },
-
-        {
-            id: 6,
-            title: "The Spiderman",
-            description: "A hacker discovers the reality he knows is a simulation and fights to break free.",
-            movie_year: 1999,
-            director: "Lana Wachowski, Lilly Wachowski",
-            actors: ["Keanu Reeves", "Laurence Fishburne", "Carrie-Anne Moss", "Hugo Weaving", "Joe Pantoliano"],
-            poster_url: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",
-            price: "90.00"
-        },
-        {
-            id: 7,
-            title: "The Dark Knight",
-            description: "Batman faces his greatest enemy, the Joker, in a battle for Gotham's soul.",
-            movie_year: 2008,
-            director: "Christopher Nolan",
-            actors: ["Christian Bale", "Heath Ledger", "Aaron Eckhart", "Maggie Gyllenhaal", "Gary Oldman", "Morgan Freeman", "Michael Caine"],
-            poster_url: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
-            price: "110.00"
-        },
-        {
-            id: 8,
-            title: "Mumy",
-            description: "A love story unfolds on the ill-fated Titanic as it sails towards disaster.",
-            movie_year: 1997,
-            director: "James Cameron",
-            actors: ["Leonardo DiCaprio", "Kate Winslet", "Billy Zane", "Kathy Bates", "Frances Fisher", "Bill Paxton", "Gloria Stuart"],
-            poster_url: "https://i.ebayimg.com/images/g/gnEAAOSwP~tW4HMS/s-l1200.jpg",
-            price: "95.00"
-        },
-
-
-    ]
-};
+let data = {}; // Declare a global variable to store the fetched data
 
 async function getData() {
-    const response = await fetch(
-      "https://raw.githubusercontent.com/payalrattan/payalrattan.github.io/refs/heads/main/data/moviesdata.json?token=<>"
-    );
-    const data = await response.json();
-  }
+    try {
+        const response = await fetch(
+            "https://raw.githubusercontent.com/payalrattan/payalrattan.github.io/refs/heads/main/data/moviesdata.json"
+        );
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        data = await response.json(); // Assign the fetched data to the global `data` variable
+        displayMovies(data.movies); // Display the movies after fetching the data
+    } catch (error) {
+        console.error("Failed to fetch movie data:", error);
+        alert("Failed to load movie data. Please try again later.");
+    }
+}
+
+// Call the getData function on page load
+window.addEventListener('load', () => {
+    getData(); // Fetch and display the movies
+});
 
 const dom = {
     movie: document.querySelector('#movies'),
@@ -161,14 +86,9 @@ const submitComment = (movieId, comment) => {
     }
 };
 
-// Initial display of movies on page load
-window.addEventListener('load', () => {
-    displayMovies(data.movies); // Display the first 5 movies
-});
-
 // Define variables for pagination
 let currentPage = 1; // Start on the first page
-const moviesPerPage = 5; // Number of movies to display per page
+const moviesPerPage = 10; // Number of movies to display per page
 
 // Function to create and append a movie element with a collapsible section
 const createMovieElement = (movie) => {
@@ -288,6 +208,15 @@ const searchIcon = document.querySelector('.search-icon'); // Ensure this matche
 // Search Handler
 const searchHandler = () => {
     const searchTerm = searchInput.value.toLowerCase().trim(); // Get the search term and trim whitespace
+
+    // Check if data.movies is populated
+    if (!data.movies || data.movies.length === 0) {
+        console.error("Movies data is not loaded yet.");
+        alert("Movies data is not available. Please try again later.");
+        return;
+    }
+
+    // Filter the movies based on the search term
     const filteredMovies = data.movies.filter((movie) =>
         movie.title.toLowerCase().includes(searchTerm) // Check if the movie title includes the search term
     );
@@ -353,11 +282,6 @@ const sortHandler = () => {
 
 // Attach the event listener to the sort dropdown
 document.querySelector('#sort-options').addEventListener('change', sortHandler);
-
-// Initial display of movies
-window.addEventListener('load', () => {
-    displayMovies(data.movies);
-});
 
 // Timer and Time Spent Logic
 const timerInput = document.querySelector('#timer-input');
