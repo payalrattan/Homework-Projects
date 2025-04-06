@@ -39,6 +39,24 @@ const createStarRating = (movieId) => {
     }
     return starContainer;
 };
+// Handlers for  star rating 
+const submitRating = (movieId, rating) => {
+    const movie = data.movies.find((movie) => movie.id === movieId);
+    const movieContainer = document.querySelector(`.movie[data-id="${movieId}"]`);
+    const ratingDisplay = movieContainer.querySelector('.rating-display');
+    ratingDisplay.textContent = `Rating: ${rating} / 5`;
+
+    // Highlight the selected stars
+    const stars = movieContainer.querySelectorAll('.star');
+    stars.forEach((star) => {
+        if (parseInt(star.dataset.value) <= rating) {
+            star.classList.add('active');
+        } else {
+            star.classList.remove('active');
+        }
+    });
+};
+
 //add comment section
 const createCommentSection = (movieId) => {
     const commentContainer = document.createElement('div');
@@ -58,24 +76,6 @@ const createCommentSection = (movieId) => {
     commentContainer.append(commentInput, submitCommentBtn, commentDisplay);
     return commentContainer;
 };
-
-// Handlers for  star rating 
-const submitRating = (movieId, rating) => {
-    const movie = data.movies.find((movie) => movie.id === movieId);
-    const movieContainer = document.querySelector(`.movie[data-id="${movieId}"]`);
-    const ratingDisplay = movieContainer.querySelector('.rating-display');
-    ratingDisplay.textContent = `Rating: ${rating} / 5`;
-
-    // Highlight the selected stars
-    const stars = movieContainer.querySelectorAll('.star');
-    stars.forEach((star) => {
-        if (parseInt(star.dataset.value) <= rating) {
-            star.classList.add('active');
-        } else {
-            star.classList.remove('active');
-        }
-    });
-};
 // Handlers for comment section
 const submitComment = (movieId, comment) => {
     if (comment.trim()) {
@@ -88,7 +88,7 @@ const submitComment = (movieId, comment) => {
 
 // Define variables for pagination
 let currentPage = 1; // Start on the first page
-const moviesPerPage = 10; // Number of movies to display per page
+const moviesPerPage = 6; // Number of movies to display per page
 
 // Function to create and append a movie element with a collapsible section
 const createMovieElement = (movie) => {
@@ -126,17 +126,18 @@ const createMovieElement = (movie) => {
 
     const ratingSection = createStarRating(movie.id);
     const commentSection = createCommentSection(movie.id);
-
+    
     const ratingDisplay = document.createElement('p');
     ratingDisplay.classList.add('rating-display');
     ratingDisplay.textContent = `Rating: ${movie.rating || 'Not yet rated'}`;
+
 
     // Append all details to the collapsible section
     collapsibleSection.append(description, price, year, director, actors, ratingSection, commentSection, ratingDisplay);
 
     // Create a button to toggle the collapsible section
     const toggleButton = document.createElement('button');
-    toggleButton.textContent = 'Expand Section'; // Initial button text
+    toggleButton.textContent = 'Show Details'; // Initial button text
     toggleButton.classList.add('toggle-button');
     toggleButton.addEventListener('click', () => {
         if (collapsibleSection.style.display === 'none') {
@@ -145,7 +146,7 @@ const createMovieElement = (movie) => {
             img.style.display = 'none'; // Hide the image
         } else {
             collapsibleSection.style.display = 'none'; // Hide the collapsible section
-            toggleButton.textContent = 'Expand Section'; // Update button text
+            toggleButton.textContent = 'Show Details'; // Update button text
             img.style.display = 'block'; // Show the image
         }
     });
@@ -228,13 +229,10 @@ const searchHandler = () => {
         // Create a movie-like container for the "No movies found" message
         const noMoviesContainer = document.createElement('div');
         noMoviesContainer.classList.add('movie'); // Use the same class as the movie block for consistent styling
-
-        const noMoviesMessage = document.createElement('p');
-        noMoviesMessage.textContent = 'No movies found matching your search.';
-        noMoviesMessage.style.color = 'white'; // Optional: Style the message
-        noMoviesMessage.style.textAlign = 'center'; // Optional: Center the message
-
-        noMoviesContainer.appendChild(noMoviesMessage); // Append the message to the container
+        const noImage = document.createElement("img");
+        noImage.src = "./assets/noImage.png";
+        noImage.alt = "No movies found matching your search";
+        noMoviesContainer.appendChild(noImage); // Append the message to the container
         dom.movie.appendChild(noMoviesContainer); // Append the container to the movies section
     } else {
         // Display the filtered movies
