@@ -1,19 +1,16 @@
 let data = {}; // Declare a global variable to store the fetched data
 
-async function getData() {
-    try {
-        const response = await fetch(
-            "https://raw.githubusercontent.com/payalrattan/payalrattan.github.io/refs/heads/main/data/moviesdata.json"
-        );
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        data = await response.json(); // Assign the fetched data to the global `data` variable
-        displayMovies(data.movies); // Display the movies after fetching the data
-    } catch (error) {
-        console.error("Failed to fetch movie data:", error);
-        alert("Failed to load movie data. Please try again later.");
-    }
+function getData() {
+    fetch("https://raw.githubusercontent.com/payalrattan/payalrattan.github.io/refs/heads/main/data/moviesdata.json")
+        .then(response => response.json())
+        .then(fetchedData => {
+            data = fetchedData; // Assign the fetched data to the global `data` variable
+            displayMovies(data.movies); // Display the movies after fetching the data
+        })
+        .catch(error => {
+            console.error("Failed to fetch movie data:", error);
+            alert("Failed to load movie data. Please try again later.");
+        });
 }
 
 // Call the getData function on page load
@@ -126,7 +123,7 @@ const createMovieElement = (movie) => {
 
     const ratingSection = createStarRating(movie.id);
     const commentSection = createCommentSection(movie.id);
-    
+
     const ratingDisplay = document.createElement('p');
     ratingDisplay.classList.add('rating-display');
     ratingDisplay.textContent = `Rating: ${movie.rating || 'Not yet rated'}`;
