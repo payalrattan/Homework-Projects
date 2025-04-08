@@ -88,16 +88,13 @@ const submitComment = (movieId, comment) => {
 
 // Define variables for pagination
 let currentPage = 1; // Start on the first page
-const moviesPerPage = 6; // Number of movies to display per page
+const moviesPerPage = 5; // Number of movies to display per page
 
 // Function to create and append a movie element with a collapsible section
 const createMovieElement = (movie) => {
     const container = document.createElement('div');
     container.classList.add('movie');
     container.setAttribute('data-id', movie.id);
-
-    const title = document.createElement('h2');
-    title.textContent = movie.title;
 
     const img = document.createElement('img');
     img.src = movie.poster_url;
@@ -107,6 +104,10 @@ const createMovieElement = (movie) => {
     const collapsibleSection = document.createElement('div');
     collapsibleSection.classList.add('movie-collapsible');
     collapsibleSection.style.display = 'none'; // Initially hidden
+
+    // Add movie title to the collapsible section
+    const title = document.createElement('h2');
+    title.textContent = movie.title;
 
     // Add movie details to the collapsible section
     const description = document.createElement('p');
@@ -126,14 +127,23 @@ const createMovieElement = (movie) => {
 
     const ratingSection = createStarRating(movie.id);
     const commentSection = createCommentSection(movie.id);
-    
+
     const ratingDisplay = document.createElement('p');
     ratingDisplay.classList.add('rating-display');
     ratingDisplay.textContent = `Rating: ${movie.rating || 'Not yet rated'}`;
 
-
     // Append all details to the collapsible section
-    collapsibleSection.append(description, price, year, director, actors, ratingSection, commentSection, ratingDisplay);
+    collapsibleSection.append(
+        title, 
+        description, 
+        price, 
+        year, 
+        director, 
+        actors, 
+        ratingSection, // Append star icons first
+        ratingDisplay, // Append the rating display below the star icons
+        commentSection
+    );
 
     // Create a button to toggle the collapsible section
     const toggleButton = document.createElement('button');
@@ -151,8 +161,8 @@ const createMovieElement = (movie) => {
         }
     });
 
-    // Append the title, image, toggle button, and collapsible section to the container
-    container.append(title, img, toggleButton, collapsibleSection);
+    // Append the image, toggle button, and collapsible section to the container
+    container.append(img, toggleButton, collapsibleSection);
 
     return container;
 };
@@ -280,6 +290,64 @@ const sortHandler = () => {
 
 // Attach the event listener to the sort dropdown
 document.querySelector('#sort-options').addEventListener('change', sortHandler);
+
+// Filter Handler
+const filterHandler = () => {
+    const filterType = document.querySelector('#filter-type').value; // Get the selected filter type
+    const filterInput = document.querySelector('#filter-input').value.trim(); // Get the filter input value and trim whitespace
+
+    if (!filterInput) {
+        alert('Please enter a value for filtering.');
+        return;
+    }
+
+    const filterValue = parseFloat(filterInput); // Convert the input value to a number
+
+    if (isNaN(filterValue)) {
+        alert('Please enter a valid number for filtering.');
+        return;
+    }
+
+    // Filter the movies based on the selected type and value
+    const filteredMovies = data.movies.filter((movie) => {
+        switch (filterType) {
+            case 'year':
+                return movie.movie_year === filterValue; // Filter by year
+            case 'price':
+                return movie.price <= filterValue; // Filter by price (less than or equal to)
+            case 'rating':
+                return movie.rating >= filterValue; // Filter by rating (greater than or equal to)
+            default:
+                return true;
+        }
+    });
+
+    // Clear the movies container and display the filtered movies
+    dom.movie.innerHTML = '';
+    if (filteredMovies.length === 0) {
+        dom.movie.innerHTML = '<p>No movies match your filter criteria.</p>';
+    } else {
+        displayMovies(filteredMovies);
+    }
+};
+
+// Attach event listener to the filter button
+document.querySelector('#filter-button').addEventListener('click', filterHandler);
+
+// Reset Filter Handler
+const resetFilterHandler = () => {
+    // Clear the filter input field
+    document.querySelector('#filter-input').value = '';
+
+    // Reset the filter type dropdown to the default value
+    document.querySelector('#filter-type').value = 'year';
+
+    // Display all movies
+    displayMovies(data.movies);
+};
+
+// Attach event listener to the reset filter button
+document.querySelector('#reset-filter-button').addEventListener('click', resetFilterHandler);
 
 // Timer and Time Spent Logic
 const timerInput = document.querySelector('#timer-input');

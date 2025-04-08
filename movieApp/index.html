@@ -42,6 +42,24 @@
         </select>
       </div>
 
+      <!-- Filter Section -->
+      <div class="filter-container">
+        <label for="filter-input">Filter By:</label>
+        <select id="filter-type" class="filter-type">
+          <option value="year">Year</option>
+          <option value="price">Price</option>
+          <option value="rating">Rating</option>
+        </select>
+        <input
+          type="number"
+          id="filter-input"
+          class="filter-input"
+          placeholder="Enter value"
+        />
+        <button id="filter-button" class="filter-button">Apply Filter</button>
+        <button id="reset-filter-button" class="reset-filter-button">Reset Filter</button>
+      </div>
+
       <!-- Timer Section -->
       <div class="timer-container">
         <label for="timer-input">Set Timer (in minutes):</label>
@@ -54,20 +72,22 @@
         <button id="start-timer" class="start-timer">Start Timer</button>
         <p id="timer-display" class="timer-display">Time Left: --:--</p>
       </div>
-
-      <!-- Time Spent Section -->
-      <div class="time-spent-container">
-        <p id="time-spent-display" class="time-spent-display">
-          Time Spent on Page: 00:00
-        </p>
-      </div>
     </div>
-
 
     <!-- Main Section -->
     <main>
       <!-- Movies Container -->
-      <div id="movies"></div>
+      <div id="movies">
+        <div class="movie">
+          <div class="movie-name">Movie Name</div>
+          <div class="movie-image">
+            <img src="movie-poster.jpg" alt="Movie Poster" />
+          </div>
+          <div class="movie-details">
+            <button class="toggle-button">Show Details</button>
+          </div>
+        </div>
+      </div>
 
       <!-- Pagination Section -->
       <div class="pagination-container">
@@ -79,25 +99,26 @@
 
     <!-- Footer Section -->
     <footer>
+      <!-- Social Icons Section -->
       <div class="footer-socialicons">
         <p>Follow On:</p>
-        <a href="https://www.facebook.com/home.php"
-          ><i class="fa-brands fa-facebook"></i
-        ></a>
-        <a href="https://www.instagram.com/"
-          ><i class="fa-brands fa-instagram"></i
-        ></a>
-        <a href="https://www.linkedin.com/login"
-          ><i class="fa-brands fa-linkedin"></i
-        ></a>
-        <a href="https://github.com/yourusername"
-          ><i class="fab fa-github"></i
-        ></a>
+        <a href="https://www.facebook.com/home.php"><i class="fa-brands fa-facebook"></i></a>
+        <a href="https://www.instagram.com/"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.linkedin.com/login"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://github.com/yourusername"><i class="fab fa-github"></i></a>
       </div>
+
+      <!-- Copyright Section -->
       <p class="copyright">
-        &copy; 2025 - Movie App |
-        <span>Made with &#x2764;&#xfe0f; by Payal</span>
+        &copy; 2025 - Movie App | <span>Made with &#x2764;&#xfe0f; by Payal</span>
       </p>
+
+      <!-- Time Spent Section -->
+      <div class="footer-right">
+        <p id="time-spent-display" class="time-spent-display">
+          Time Spent on Page: 00:00
+        </p>
+      </div>
     </footer>
 
     <script src="movies.js"></script>
