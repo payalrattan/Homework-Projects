@@ -1,14 +1,14 @@
 let data = {}; // Declare a global variable to store the fetched data
 
+// Fetch movie data from the API
 async function getData() {
     try {
-        const response = await fetch(
-            "https://raw.githubusercontent.com/payalrattan/payalrattan.github.io/refs/heads/main/data/moviesdata.json"
-        );
+        const response = await fetch("https://raw.githubusercontent.com/payalrattan/payalrattan.github.io/refs/heads/main/data/moviesdata.json");
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         data = await response.json(); // Assign the fetched data to the global `data` variable
+        console.log(data);
         displayMovies(data.movies); // Display the movies after fetching the data
     } catch (error) {
         console.error("Failed to fetch movie data:", error);
@@ -21,74 +21,24 @@ window.addEventListener('load', () => {
     getData(); // Fetch and display the movies
 });
 
+// Centralized DOM object
 const dom = {
     movie: document.querySelector('#movies'),
+    prevButton: document.querySelector('#prev-page'),
+    nextButton: document.querySelector('#next-page'),
+    currentPageDisplay: document.querySelector('#current-page'),
+    searchInput: document.querySelector('.search-input'),
+    searchIcon: document.querySelector('.search-icon'),
+    sortOptions: document.querySelector('#sort-options'),
+    filterType: document.querySelector('#filter-type'),
+    filterInput: document.querySelector('#filter-input'),
+    filterButton: document.querySelector('#filter-button'),
+    resetFilterButton: document.querySelector('#reset-filter-button'),
+    timerInput: document.querySelector('#timer-input'),
+    startTimerButton: document.querySelector('#start-timer'),
+    timerDisplay: document.querySelector('#timer-display'),
+    timeSpentDisplay: document.querySelector('#time-spent-display'),
 };
-
-//add star rating
-const createStarRating = (movieId) => {
-    const starContainer = document.createElement('div');
-    starContainer.classList.add('star-rating');
-    for (let i = 1; i <= 5; i++) {
-        const star = document.createElement('span');
-        star.classList.add('star');
-        star.textContent = '★';
-        star.dataset.value = i;
-        star.addEventListener('click', () => submitRating(movieId, i));
-        starContainer.appendChild(star);
-    }
-    return starContainer;
-};
-// Handlers for  star rating 
-const submitRating = (movieId, rating) => {
-    const movie = data.movies.find((movie) => movie.id === movieId);
-    const movieContainer = document.querySelector(`.movie[data-id="${movieId}"]`);
-    const ratingDisplay = movieContainer.querySelector('.rating-display');
-    ratingDisplay.textContent = `Rating: ${rating} / 5`;
-
-    // Highlight the selected stars
-    const stars = movieContainer.querySelectorAll('.star');
-    stars.forEach((star) => {
-        if (parseInt(star.dataset.value) <= rating) {
-            star.classList.add('active');
-        } else {
-            star.classList.remove('active');
-        }
-    });
-};
-
-//add comment section
-const createCommentSection = (movieId) => {
-    const commentContainer = document.createElement('div');
-    commentContainer.classList.add('comment-section');
-
-    const commentInput = document.createElement('input');
-    commentInput.type = 'text';
-    commentInput.placeholder = 'Add a comment...';
-
-    const submitCommentBtn = document.createElement('button');
-    submitCommentBtn.textContent = 'Submit Comment';
-    submitCommentBtn.addEventListener('click', () => submitComment(movieId, commentInput.value));
-
-    const commentDisplay = document.createElement('p');
-    commentDisplay.classList.add('movie-comments');
-
-    commentContainer.append(commentInput, submitCommentBtn, commentDisplay);
-    return commentContainer;
-};
-// Handlers for comment section
-const submitComment = (movieId, comment) => {
-    if (comment.trim()) {
-        const movie = data.movies.find((movie) => movie.id === movieId);
-        const movieContainer = document.querySelector(`.movie[data-id="${movieId}"]`);
-        const commentDisplay = movieContainer.querySelector('.movie-comments');
-        commentDisplay.textContent = `Comment: ${comment}`;
-    }
-};
-
-// Define variables for pagination
-let currentPage = 1; // Start on the first page
-const moviesPerPage = 5; // Number of movies to display per page
 
 // Function to create and append a movie element with a collapsible section
 const createMovieElement = (movie) => {
@@ -97,19 +47,16 @@ const createMovieElement = (movie) => {
     container.setAttribute('data-id', movie.id);
 
     const img = document.createElement('img');
-    img.src = movie.poster_url;
+    img.src = movie.poster_url || './assets/noImage.png'; // Fallback to default image
     img.alt = movie.title;
 
-    // Create the collapsible section
     const collapsibleSection = document.createElement('div');
     collapsibleSection.classList.add('movie-collapsible');
     collapsibleSection.style.display = 'none'; // Initially hidden
 
-    // Add movie title to the collapsible section
     const title = document.createElement('h2');
     title.textContent = movie.title;
 
-    // Add movie details to the collapsible section
     const description = document.createElement('p');
     description.textContent = `Description: ${movie.description}`;
 
@@ -132,41 +79,39 @@ const createMovieElement = (movie) => {
     ratingDisplay.classList.add('rating-display');
     ratingDisplay.textContent = `Rating: ${movie.rating || 'Not yet rated'}`;
 
-    // Append all details to the collapsible section
     collapsibleSection.append(
-        title, 
-        description, 
-        price, 
-        year, 
-        director, 
-        actors, 
-        ratingSection, // Append star icons first
-        ratingDisplay, // Append the rating display below the star icons
+        title,
+        description,
+        price,
+        year,
+        director,
+        actors,
+        ratingSection,
+        ratingDisplay,
         commentSection
     );
-
-    // Create a button to toggle the collapsible section
-    const toggleButton = document.createElement('button');
-    toggleButton.textContent = 'Show Details'; // Initial button text
-    toggleButton.classList.add('toggle-button');
-    toggleButton.addEventListener('click', () => {
+    //Creating show/hide button
+    const showButton = document.createElement('button');
+    showButton.textContent = 'Show Details';
+    showButton.classList.add('show-button');
+    showButton.addEventListener('click', () => {
         if (collapsibleSection.style.display === 'none') {
-            collapsibleSection.style.display = 'block'; // Show the collapsible section
-            toggleButton.textContent = 'Hide Details'; // Update button text
-            img.style.display = 'none'; // Hide the image
+            collapsibleSection.style.display = 'block';
+            showButton.textContent = 'Hide Details';
+            img.style.display = 'none';
         } else {
-            collapsibleSection.style.display = 'none'; // Hide the collapsible section
-            toggleButton.textContent = 'Show Details'; // Update button text
-            img.style.display = 'block'; // Show the image
+            collapsibleSection.style.display = 'none';
+            showButton.textContent = 'Show Details';
+            img.style.display = 'block';
         }
     });
 
-    // Append the image, toggle button, and collapsible section to the container
-    container.append(img, toggleButton, collapsibleSection);
-
+    container.append(img, showButton, collapsibleSection);
     return container;
 };
-
+// Define variables for pagination
+let currentPage = 1; // Start on the first page
+const moviesPerPage = 6; // Number of movies to display per page
 // Function to display movies with pagination
 const displayMovies = (movies) => {
     const startIndex = (currentPage - 1) * moviesPerPage;
@@ -187,25 +132,21 @@ const displayMovies = (movies) => {
 const updatePaginationButtons = (totalMovies) => {
     const totalPages = Math.ceil(totalMovies / moviesPerPage);
 
-    const prevButton = document.querySelector('#prev-page');
-    const nextButton = document.querySelector('#next-page');
-    const currentPageDisplay = document.querySelector('#current-page');
+    dom.prevButton.disabled = currentPage === 1;
+    dom.nextButton.disabled = currentPage === totalPages;
 
-    prevButton.disabled = currentPage === 1;
-    nextButton.disabled = currentPage === totalPages;
-
-    currentPageDisplay.textContent = `Page ${currentPage}`;
+    dom.currentPageDisplay.textContent = `Page ${currentPage}`;
 };
 
 // Event listeners for pagination buttons
-document.querySelector('#prev-page').addEventListener('click', () => {
+dom.prevButton.addEventListener('click', () => {
     if (currentPage > 1) {
         currentPage--;
         displayMovies(data.movies);
     }
 });
 
-document.querySelector('#next-page').addEventListener('click', () => {
+dom.nextButton.addEventListener('click', () => {
     const totalPages = Math.ceil(data.movies.length / moviesPerPage);
     if (currentPage < totalPages) {
         currentPage++;
@@ -213,48 +154,39 @@ document.querySelector('#next-page').addEventListener('click', () => {
     }
 });
 
-const searchInput = document.querySelector('.search-input'); // Ensure this matches the class in your HTML
-const searchIcon = document.querySelector('.search-icon'); // Ensure this matches the class in your HTML
-
 // Search Handler
 const searchHandler = () => {
-    const searchTerm = searchInput.value.toLowerCase().trim(); // Get the search term and trim whitespace
+    const searchTerm = dom.searchInput.value.toLowerCase().trim();
 
-    // Check if data.movies is populated
     if (!data.movies || data.movies.length === 0) {
-        console.error("Movies data is not loaded yet.");
         alert("Movies data is not available. Please try again later.");
         return;
     }
 
-    // Filter the movies based on the search term
     const filteredMovies = data.movies.filter((movie) =>
-        movie.title.toLowerCase().includes(searchTerm) // Check if the movie title includes the search term
+        movie.title.toLowerCase().includes(searchTerm)
     );
 
-    // Clear the movies container
     dom.movie.innerHTML = '';
 
     if (filteredMovies.length === 0) {
-        // Create a movie-like container for the "No movies found" message
         const noMoviesContainer = document.createElement('div');
-        noMoviesContainer.classList.add('movie'); // Use the same class as the movie block for consistent styling
+        noMoviesContainer.classList.add('movie');
         const noImage = document.createElement("img");
         noImage.src = "./assets/noImage.png";
         noImage.alt = "No movies found matching your search";
-        noMoviesContainer.appendChild(noImage); // Append the message to the container
-        dom.movie.appendChild(noMoviesContainer); // Append the container to the movies section
+        noMoviesContainer.appendChild(noImage);
+        dom.movie.appendChild(noMoviesContainer);
     } else {
-        // Display the filtered movies
         displayMovies(filteredMovies);
     }
 };
 
 // Attach event listener to the search icon
-searchIcon.addEventListener('click', searchHandler);
+dom.searchIcon.addEventListener('click', searchHandler);
 
 // Attach event listener to the search input for "Enter" key press
-searchInput.addEventListener('keypress', (event) => {
+dom.searchInput.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
         searchHandler();
     }
@@ -262,67 +194,61 @@ searchInput.addEventListener('keypress', (event) => {
 
 // Sorting Handler
 const sortHandler = () => {
-    const sortOption = document.querySelector('#sort-options').value; // Get the selected sort option
+    const sortOption = dom.sortOptions.value;
 
-    // Sort the movies array based on the selected option
-    const sortedMovies = [...data.movies]; // Create a copy of the movies array to avoid mutating the original
+    const sortedMovies = [...data.movies];
 
     switch (sortOption) {
         case 'name':
-            sortedMovies.sort((a, b) => a.title.localeCompare(b.title)); // Sort by name (alphabetical order)
+            sortedMovies.sort((a, b) => a.title.localeCompare(b.title));
             break;
         case 'year':
-            sortedMovies.sort((a, b) => a.movie_year - b.movie_year); // Sort by year (ascending order)
+            sortedMovies.sort((a, b) => a.movie_year - b.movie_year);
             break;
         case 'rating':
-            sortedMovies.sort((a, b) => b.rating - a.rating); // Sort by rating (descending order)
+            sortedMovies.sort((a, b) => b.rating - a.rating);
             break;
         case 'price':
-            sortedMovies.sort((a, b) => a.price - b.price); // Sort by price (ascending order)
-            break;
-        default:
+            sortedMovies.sort((a, b) => a.price - b.price);
             break;
     }
 
-    // Display the sorted movies
     displayMovies(sortedMovies);
 };
 
 // Attach the event listener to the sort dropdown
-document.querySelector('#sort-options').addEventListener('change', sortHandler);
+dom.sortOptions.addEventListener('change', sortHandler);
 
 // Filter Handler
 const filterHandler = () => {
-    const filterType = document.querySelector('#filter-type').value; // Get the selected filter type
-    const filterInput = document.querySelector('#filter-input').value.trim(); // Get the filter input value and trim whitespace
+    const filterType = dom.filterType.value;
+    const filterInput = dom.filterInput.value.trim();
 
     if (!filterInput) {
         alert('Please enter a value for filtering.');
         return;
     }
 
-    const filterValue = parseFloat(filterInput); // Convert the input value to a number
+    const filterValue = parseFloat(filterInput);
 
     if (isNaN(filterValue)) {
         alert('Please enter a valid number for filtering.');
         return;
     }
 
-    // Filter the movies based on the selected type and value
     const filteredMovies = data.movies.filter((movie) => {
         switch (filterType) {
             case 'year':
-                return movie.movie_year === filterValue; // Filter by year
+                return movie.movie_year === filterValue;
             case 'price':
-                return movie.price <= filterValue; // Filter by price (less than or equal to)
+                return movie.price <= filterValue;
             case 'rating':
-                return movie.rating >= filterValue; // Filter by rating (greater than or equal to)
+                return movie.rating >= filterValue;
             default:
                 return true;
         }
     });
 
-    // Clear the movies container and display the filtered movies
     dom.movie.innerHTML = '';
     if (filteredMovies.length === 0) {
         dom.movie.innerHTML = '<p>No movies match your filter criteria.</p>';
@@ -332,35 +258,82 @@ const filterHandler = () => {
 };
 
 // Attach event listener to the filter button
-document.querySelector('#filter-button').addEventListener('click', filterHandler);
+dom.filterButton.addEventListener('click', filterHandler);
 
 // Reset Filter Handler
 const resetFilterHandler = () => {
-    // Clear the filter input field
-    document.querySelector('#filter-input').value = '';
-
-    // Reset the filter type dropdown to the default value
-    document.querySelector('#filter-type').value = 'year';
-
-    // Display all movies
+    dom.filterInput.value = '';
+    dom.filterType.value = 'year';
     displayMovies(data.movies);
 };
 
 // Attach event listener to the reset filter button
-document.querySelector('#reset-filter-button').addEventListener('click', resetFilterHandler);
+dom.resetFilterButton.addEventListener('click', resetFilterHandler);
+
+// Star Rating
+const createStarRating = (movieId) => {
+    const starContainer = document.createElement('div');
+    starContainer.classList.add('star-rating');
+    for (let i = 1; i <= 5; i++) {
+        const star = document.createElement('span');
+        star.classList.add('star');
+        star.textContent = '★';
+        star.dataset.value = i;
+        star.addEventListener('click', () => submitRating(movieId, i));
+        starContainer.appendChild(star);
+    }
+    return starContainer;
+};
+
+const submitRating = (movieId, rating) => {
+    const movieContainer = document.querySelector(`.movie[data-id="${movieId}"]`);
+    const ratingDisplay = movieContainer.querySelector('.rating-display');
+    ratingDisplay.textContent = `Rating: ${rating} / 5`;
+
+    const stars = movieContainer.querySelectorAll('.star');
+    stars.forEach((star) => {
+        if (parseInt(star.dataset.value) <= rating) {
+            star.classList.add('active');
+        } else {
+            star.classList.remove('active');
+        }
+    });
+};
+
+// Comment Section
+const createCommentSection = (movieId) => {
+    const commentContainer = document.createElement('div');
+    commentContainer.classList.add('comment-section');
+
+    const commentInput = document.createElement('input');
+    commentInput.type = 'text';
+    commentInput.placeholder = 'Add a comment...';
+
+    const submitCommentBtn = document.createElement('button');
+    submitCommentBtn.textContent = 'Submit Comment';
+    submitCommentBtn.addEventListener('click', () => submitComment(movieId, commentInput.value));
+
+    const commentDisplay = document.createElement('p');
+    commentDisplay.classList.add('movie-comments');
+
+    commentContainer.append(commentInput, submitCommentBtn, commentDisplay);
+    return commentContainer;
+};
+
+const submitComment = (movieId, comment) => {
+    if (comment.trim()) {
+        const movieContainer = document.querySelector(`.movie[data-id="${movieId}"]`);
+        const commentDisplay = movieContainer.querySelector('.movie-comments');
+        commentDisplay.textContent = `Comment: ${comment}`;
+    }
+};
 
 // Timer and Time Spent Logic
-const timerInput = document.querySelector('#timer-input');
-const startTimerButton = document.querySelector('#start-timer');
-const timerDisplay = document.querySelector('#timer-display');
-const timeSpentDisplay = document.querySelector('#time-spent-display');
-
 let timerInterval;
 let timeSpent = 0;
 
-// Timer Handler
 const startTimer = () => {
-    const minutes = parseInt(timerInput.value);
+    const minutes = parseInt(dom.timerInput.value);
 
     if (isNaN(minutes) || minutes <= 0) {
         alert('Please enter a valid number of minutes.');
@@ -373,11 +346,11 @@ const startTimer = () => {
         const minutesLeft = Math.floor(timeLeft / 60);
         const secondsLeft = timeLeft % 60;
 
-        timerDisplay.textContent = `Time Left: ${minutesLeft}:${secondsLeft < 10 ? '0' : ''}${secondsLeft}`;
+        dom.timerDisplay.textContent = `Time Left: ${minutesLeft}:${secondsLeft < 10 ? '0' : ''}${secondsLeft}`;
 
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
-            timerDisplay.textContent = 'Time is up!';
+            dom.timerDisplay.textContent = 'Time is up!';
             alert('Time is up! Pick a movie now!');
         }
 
@@ -385,20 +358,17 @@ const startTimer = () => {
     }, 1000);
 };
 
-// Attach the timer handler to the start button
-startTimerButton.addEventListener('click', () => {
+dom.startTimerButton.addEventListener('click', () => {
     clearInterval(timerInterval);
     startTimer();
 });
 
-// Function to update the time spent display
 const updateTimeSpent = () => {
     timeSpent++;
     const minutes = Math.floor(timeSpent / 60);
     const seconds = timeSpent % 60;
 
-    timeSpentDisplay.textContent = `Time Spent on Page: ${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    dom.timeSpentDisplay.textContent = `Time Spent on Page: ${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 };
 
-// Start the timer to track time spent on the page
 setInterval(updateTimeSpent, 1000);

@@ -35,7 +35,6 @@ input:focus {
 }
 
 .image-container img {
-  
   width: 50%;
   height: 80%;
 }
@@ -180,7 +179,7 @@ input:focus {
 }
 
 /* Toggle Button */
-.toggle-button {
+.show-button {
   margin: 0.5rem 0;
   padding: 0.5rem 1rem;
   background-color: #bebfcc;
@@ -418,7 +417,7 @@ footer .copyright {
 
 /* Sort Section Styling */
 .sort-container {
-  background-color: #373b69; /* Dark blue background for sort section */
+  background-color: #2c2f55; /* Dark blue background for sort section */
   border: 1px solid #44476a; /* Subtle border to highlight the section */
 }
 
@@ -439,7 +438,7 @@ footer .copyright {
 
 /* Filter Input Styling */
 .filter-input {
-  width: 80px; /* Reduce the width of the input box */
+  width: 30px; /* Reduce the width of the input box */
   padding: 0.3rem 0.5rem; /* Compact padding */
   border-radius: 4px; /* Slightly smaller border radius */
   border: 1px solid #44476a; /* Match the theme */
