@@ -28,23 +28,24 @@ input:focus {
 /* Navbar */
 .nav-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   background-color: #373b69;
   padding: 0.7rem;
 }
 
 .image-container img {
-  width: 50%;
-  height: 80%;
+  width: 80%; /* Ensure the image takes the full width of the container */
+  height: 100%; /* Ensure the image takes the full height of the container */
+  object-fit: cover; /* Cover the container while maintaining aspect ratio */
+  display: block; /* Ensure the image is treated as a block element */
 }
 
 .logo {
-  display: flex;
-  align-items: center;
+  align-items: left;
   background-size: cover;
-  height: 8vh;
-  width: 100%;
+  height: 100%;
+  width: 75%;
 }
 
 .image-container:hover {
@@ -55,8 +56,8 @@ input:focus {
 /* Search Input */
 .nav-search {
   position: relative;
-  width: 100%;
-  max-width: 300px;
+  height: 25%;
+  width: 35%;
 }
 
 .search-input {
@@ -85,10 +86,11 @@ input:focus {
   color: #22254b;
   font-size: 1.3rem;
   cursor: pointer;
+  transition: all 0.5s ease; /* Smooth transition for hover effect */
 }
 
 .search-icon:hover {
-  color: white;
+  color: #e58a13;
 }
 
 /* Movies Container */
@@ -104,10 +106,10 @@ input:focus {
 .movie {
   position: relative;
   padding: 1rem;
-  width: 300px;
+  width: 30%;
   margin: 1rem;
   border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(54, 47, 47, 0.2);
   background-color: #373b69;
   color: white;
   overflow: hidden;
@@ -141,6 +143,9 @@ input:focus {
 .movie h2 {
   color: white;
   margin: 0.5rem 0;
+  text-align: center;
+  text-transform: uppercase; /* Uppercase text for emphasis */
+  text-decoration: underline;
 }
 
 /* Movie Name Section */
@@ -173,22 +178,28 @@ input:focus {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for consistency */
 }
 
-.movie-collapsible p,
-.movie-collapsible h2 {
+.movie-collapsible p {
   margin: 0.5rem 0; /* Add spacing between elements */
+  text-align: justify;
+}
+
+.movie-collapsible p strong {
+  color: #e58a13; /* Set the text color to #e58a13 for labels */
+  font-weight: 800; /* Ensure the text remains bold */
 }
 
 /* Toggle Button */
 .show-button {
   margin: 0.5rem 0;
   padding: 0.5rem 1rem;
-  background-color: #bebfcc;
+  background-color: #212121; /* Set the background color to #555 */
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s ease;
+  /* Make the button text bold */
 }
 
 .toggle-button:hover {
@@ -197,18 +208,18 @@ input:focus {
 
 /* Show Details and Hide Details Button Styling */
 .toggle-button {
-  padding: 0.3rem 0.7rem; /* Compact padding for buttons */
-  background-color: #555; /* Match the theme */
-  color: white; /* White text */
-  border: none;
-  border-radius: 4px; /* Slightly smaller border radius */
-  cursor: pointer;
-  font-size: 0.9rem; /* Compact font size */
+  padding: 0.5rem 1rem; /* Add padding for spacing */
+  background-color: #e58a13; /* Set the background color to #555 */
+  color: white; /* Ensure the text color is white */
+  border: none; /* Remove any borders */
+  border-radius: 4px; /* Add rounded corners */
+  cursor: pointer; /* Change the cursor to a pointer */
+  font-size: 1rem; /* Set a consistent font size */
   transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover and transform effects */
 }
 
 .toggle-button:hover {
-  background-color: #666; /* Slightly lighter background on hover */
+  background-color: #555; /* Slightly lighter background on hover */
   transform: scale(1.05); /* Slightly enlarge the button on hover */
 }
 
@@ -266,7 +277,7 @@ input:focus {
 
 .comment-section button {
   padding: 0.5rem 1rem;
-  background-color: #333;
+  background-color: #212121;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -311,7 +322,7 @@ input:focus {
 }
 
 .pagination-button:disabled {
-  background-color: #555; /* Gray background for disabled buttons */
+  background-color: #212121; /* Gray background for disabled buttons */
   cursor: not-allowed; /* Show not-allowed cursor for disabled buttons */
 }
 
@@ -390,14 +401,13 @@ footer .copyright {
 /* Controls Section */
 .controls-container {
   display: flex; /* Use flexbox for layout */
-  justify-content: space-between; /* Distribute sections evenly */
+  justify-content: space-around; /* Distribute sections evenly */
   align-items: center; /* Vertically align items */
   margin: 1rem 0;
   padding: 1rem;
   background-color: #22254b; /* Match the dark theme */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
-  gap: 1rem; /* Add spacing between sections */
 }
 
 /* Each Section */
@@ -428,8 +438,6 @@ footer .copyright {
   display: flex; /* Use flexbox for alignment */
   align-items: center; /* Vertically align content */
   justify-content: flex-start; /* Align content to the left */
-  gap: 0.5rem; /* Add spacing between elements */
-  padding: 0.5rem; /* Reduce padding for compactness */
   border-radius: 8px; /* Rounded corners for consistency */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for consistency */
   color: white; /* Ensure text is white */
@@ -438,7 +446,7 @@ footer .copyright {
 
 /* Filter Input Styling */
 .filter-input {
-  width: 30px; /* Reduce the width of the input box */
+  width: 15px; /* Reduce the width of the input box */
   padding: 0.3rem 0.5rem; /* Compact padding */
   border-radius: 4px; /* Slightly smaller border radius */
   border: 1px solid #44476a; /* Match the theme */
@@ -449,19 +457,21 @@ footer .copyright {
 
 /* Filter Button Styling */
 .filter-button,
-.reset-filter-button {
-  padding: 0.3rem 0.7rem; /* Compact padding for buttons */
-  background-color: #555; /* Match the theme */
-  color: white; /* White text */
+.reset-filter-button,
+.start-timer {
+  background-color: #555;
+  color: white;
   border: none;
-  border-radius: 4px; /* Slightly smaller border radius */
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 0.8rem; /* Reduce font size */
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
   transition: background-color 0.3s ease;
 }
 
 .filter-button:hover,
-.reset-filter-button:hover {
+.reset-filter-button:hover,
+.start-timer:hover {
   background-color: #666; /* Slightly lighter background on hover */
 }
 
@@ -487,18 +497,18 @@ footer .copyright {
   font-size: 0.8rem; /* Reduce font size */
 }
 
-/* Inputs and Buttons (Shared Styling) */
+/* Inputs and Buttons  */
 .sort-options,
 .filter-type,
 .filter-input,
 .timer-input {
-  width: auto; /* Adjust width to fit content */
+  width: 39%; /* Adjust width to fit content */
   padding: 0.3rem 0.5rem; /* Compact padding */
   border-radius: 4px; /* Slightly smaller border radius */
   border: 1px solid white; /* Match the theme */
   background-color: #44476a; /* Match the dark theme */
   color: white; /* Ensure text is white */
-  font-size: 0.8rem; /* Reduce font size */
+  font-size: 0.7rem; /* Reduce font size */
 }
 
 .filter-button,
@@ -549,7 +559,7 @@ footer .copyright {
   .sort-container,
   .filter-container,
   .timer-container {
-    width: 100%; /* Make each section take full width */
+    width: 30%; /* Make each section take full width */
     justify-content: flex-start; /* Align content to the left */
     padding: 0.5rem; /* Reduce padding for smaller screens */
   }
@@ -581,39 +591,191 @@ footer .copyright {
   .timer-input {
     width: 100px; /* Keep input size consistent */
   }
-}
+  .image-container img {
+    width: 20vw;
+    height: 20vh;
+    display: block;
+  }
 
-/* Media Query for Large Devices (Desktops) */
-@media (min-width: 1025px) {
+  /* Media Query for Large Devices (Desktops) */
+  @media (min-width: 1025px) {
+    .controls-container {
+      flex-direction: row; /* Keep sections in a row */
+      justify-content: space-between; /* Distribute sections evenly */
+      gap: 1rem; /* Add spacing between sections */
+    }
+
+    .sort-container,
+    .filter-container,
+    .timer-container {
+      flex: 1; /* Ensure equal spacing for all sections */
+      padding: 1rem; /* Add padding for larger screens */
+    }
+
+    .timer-input {
+      width: 100px; /* Keep input size consistent */
+    }
+  }
+
+  /* Footer Section for Small Devices */
+  @media (max-width: 768px) {
+    footer {
+      flex-direction: column; /* Stack footer content vertically */
+      align-items: center; /* Center-align all footer content */
+      padding: 1rem;
+    }
+
+    .footer-right {
+      position: static; /* Remove absolute positioning */
+      text-align: center; /* Center-align the time spent section */
+      margin-top: 1rem; /* Add spacing above the section */
+    }
+  }
+
+  @media (max-width: 320px) {
+    /* General Body Styling */
+    body {
+      font-size: 0.8rem; /* Reduce font size for smaller screens */
+      padding: 0.5rem; /* Add padding for better spacing */
+    }
+
+    /* Navbar */
+    .nav-container {
+      flex-direction: column; /* Stack navbar items vertically */
+      align-items: center; /* Center-align items */
+      height: 50%; /* Allow height to adjust based on content */
+      width: 100%; /* Full width for navbar */
+    }
+
+    .image-container img {
+      width: 50%; /* Adjust logo size for smaller screens */
+      height: auto; /* Maintain aspect ratio */
+      margin: auto; /* Center-align the logo */
+    }
+
+    .nav-search {
+      width: 100%; /* Full width for search bar */
+      margin-top: 0.5rem; /* Add spacing */
+    }
+
+    .search-input {
+      font-size: 0.8rem; /* Reduce font size */
+      padding: 0.3rem; /* Compact padding */
+    }
+
+    /* Movies Container */
+    #movies {
+      flex-direction: column; /* Stack movies vertically */
+      padding: 0.5rem; /* Reduce padding */
+    }
+
+    .movie {
+      width: 90%; /* Make movie cards take most of the screen width */
+      margin: 0.5rem auto; /* Center-align and add spacing */
+    }
+
+    .movie img {
+      height: auto; /* Maintain aspect ratio */
+    }
+
+    /* Controls Section */
+    .controls-container {
+      flex-direction: column; /* Stack controls vertically */
+      align-items: flex-start; /* Align items to the left */
+      gap: 0.5rem; /* Add spacing between sections */
+      padding: 0.5rem;
+    }
+
+    .sort-container,
+    .filter-container,
+    .timer-container {
+      width: 100%; /* Full width for each section */
+      padding: 0.5rem; /* Compact padding */
+    }
+
+    .filter-input,
+    .timer-input {
+      width: 100%; /* Full width for inputs */
+      font-size: 0.8rem; /* Reduce font size */
+    }
+
+    .filter-button,
+    .reset-filter-button,
+    .start-timer {
+      width: 100%; /* Full width for buttons */
+      font-size: 0.8rem; /* Reduce font size */
+      padding: 0.5rem; /* Compact padding */
+    }
+
+    /* Footer */
+    footer {
+      flex-direction: column; /* Stack footer content vertically */
+      align-items: center; /* Center-align all footer content */
+      padding: 0.5rem;
+    }
+
+    .footer-socialicons {
+      gap: 0.5rem; /* Reduce spacing between icons */
+    }
+
+    .footer-right {
+      text-align: center; /* Center-align the time spent section */
+      margin-top: 1rem; /* Add spacing above the section */
+    }
+  }
+  @media (min-width: 375px) {
+    .image-container img {
+      width: 20vw;
+      height: 20vh;
+      display: none;
+    }
+  }
+  .movie {
+    width: 70%;
+  }
+
+  @media (max-width: 425px) {
+    .image-container img {
+      width: 35%; /* Adjust logo size for medium-small screens */
+      height: auto; /* Maintain aspect ratio */
+      margin: auto; /* Center-align the logo */
+    }
+  }
   .controls-container {
     flex-direction: row; /* Keep sections in a row */
     justify-content: space-between; /* Distribute sections evenly */
     gap: 1rem; /* Add spacing between sections */
   }
-
   .sort-container,
   .filter-container,
   .timer-container {
-    flex: 1; /* Ensure equal spacing for all sections */
-    padding: 1rem; /* Add padding for larger screens */
+    flex: 1 1 65%; /* Allow sections to take up half the width */
+    padding: 0.8rem; /* Adjust padding */
   }
 
   .timer-input {
     width: 100px; /* Keep input size consistent */
   }
 }
-
-/* Footer Section for Small Devices */
-@media (max-width: 768px) {
-  footer {
-    flex-direction: column; /* Stack footer content vertically */
-    align-items: center; /* Center-align all footer content */
-    padding: 1rem;
+@media (min-width: 1440px) {
+  .image-container img {
+    width: 20%; /* Adjust logo size for large screens */
+    height: auto; /* Maintain aspect ratio */
+    margin: auto; /* Center-align the logo */
   }
-
-  .footer-right {
-    position: static; /* Remove absolute positioning */
-    text-align: center; /* Center-align the time spent section */
-    margin-top: 1rem; /* Add spacing above the section */
+}
+@media (min-width: 1024px) {
+  .image-container img {
+    width: 20vw;
+    height: 20vh;
+    display: inline-block;
+  }
+}
+@media (min-width: 768px) {
+  .image-container img {
+    width: 30%; /* Adjust logo size for tablets */
+    height: auto; /* Maintain aspect ratio */
+    margin: auto; /* Center-align the logo */
+    display: inline-block;
   }
 }
