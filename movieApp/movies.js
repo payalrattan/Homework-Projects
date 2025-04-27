@@ -251,7 +251,13 @@ const filterHandler = () => {
 
     dom.movie.innerHTML = '';
     if (filteredMovies.length === 0) {
-        dom.movie.innerHTML = '<p>No movies match your filter criteria.</p>';
+        const noMoviesContainer = document.createElement('div');
+        noMoviesContainer.classList.add('movie');
+        const noImage = document.createElement("img");
+        noImage.src = "./assets/noImage.png";
+        noImage.alt = "No movies found matching your search";
+        noMoviesContainer.appendChild(noImage);
+        dom.movie.appendChild(noMoviesContainer);
     } else {
         displayMovies(filteredMovies);
     }
