@@ -3,14 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
     <link rel="stylesheet" href="movies.css" />
     <title>Movies</title>
   </head>
-
   <body>
     <!-- Navbar -->
     <nav>
@@ -23,7 +19,7 @@
         <div class="nav-search">
           <input
             type="text"
-            placeholder="Search Movie..."
+            placeholder="Search Movies..."
             class="search-input"
           />
           <i class="fa-solid fa-magnifying-glass search-icon"></i>
@@ -39,7 +35,6 @@
         <select id="sort-options" class="sort-options">
           <option value="name">Name</option>
           <option value="year">Year</option>
-          <option value="rating">Rating</option>
           <option value="price">Price</option>
         </select>
       </div>
@@ -50,28 +45,27 @@
         <select id="filter-type" class="filter-type">
           <option value="year">Year</option>
           <option value="price">Price</option>
-          <option value="rating">Rating</option>
         </select>
         <input
           type="number"
           id="filter-input"
           class="filter-input"
-          placeholder="Enter value"
+          placeholder="Year/$"
         />
-        <button id="filter-button" class="filter-button">Apply Filter</button>
+        <button id="filter-button" class="filter-button">Apply</button>
         <button id="reset-filter-button" class="reset-filter-button">
-          Reset Filter
+          Reset
         </button>
       </div>
 
       <!-- Timer Section -->
       <div class="timer-container">
-        <label for="timer-input">Set Timer (in minutes):</label>
+        <label for="timer-input"><i class="fa-solid fa-hourglass"></i></label>
         <input
           type="number"
           id="timer-input"
           class="timer-input"
-          placeholder="Enter minutes"
+          placeholder="Enter min"
         />
         <button id="start-timer" class="start-timer">Start Timer</button>
         <p id="timer-display" class="timer-display">Time Left: --:--</p>
@@ -81,17 +75,7 @@
     <!-- Main Section -->
     <main>
       <!-- Movies Container -->
-      <div id="movies">
-        <div class="movie">
-          <div class="movie-name">Movie Name</div>
-          <!-- <div class="movie-image">
-            <img src="movie-poster.jpg" alt="Movie Poster" />
-          </div> -->
-          <div class="movie-details">
-            <button class="toggle-button">Show Details</button>
-          </div>
-        </div>
-      </div>
+      <div id="movies"></div>
 
       <!-- Pagination Section -->
       <div class="pagination-container">
@@ -124,8 +108,9 @@
 
       <!-- Copyright Section -->
       <p class="copyright">
-        &copy; 2025 - Movie App |
-        <span>Made with &#x2764;&#xfe0f; by Payal</span>
+        &copy; 2025 - Movie App |<span
+          >Made with &#x2764;&#xfe0f; by Payal</span
+        >
       </p>
 
       <!-- Time Spent Section -->

@@ -42,9 +42,9 @@ const dom = {
 
 // Function to create and append a movie element with a collapsible section
 const createMovieElement = (movie) => {
-    const container = document.createElement('div');
-    container.classList.add('movie');
-    container.setAttribute('data-id', movie.id);
+    const movieContainer = document.createElement('div');
+    movieContainer.classList.add('movie');
+    movieContainer.setAttribute('data-id', movie.id);
 
     const img = document.createElement('img');
     img.src = movie.poster_url || './assets/noImage.png'; // Fallback to default image
@@ -58,26 +58,26 @@ const createMovieElement = (movie) => {
     title.textContent = movie.title;
 
     const description = document.createElement('p');
-    description.textContent = `Description: ${movie.description}`;
+    description.innerHTML = `<strong>Description:</strong> ${movie.description}`;
 
     const price = document.createElement('p');
-    price.textContent = `Price: $${movie.price}`;
+    price.innerHTML = `<strong>Price:</strong> $${movie.price}`;
 
     const year = document.createElement('p');
-    year.textContent = `Year: ${movie.movie_year}`;
+    year.innerHTML = `<strong>Year :</strong> ${movie.movie_year}`;
 
     const director = document.createElement('p');
-    director.textContent = `Director: ${movie.director}`;
+    director.innerHTML = `<strong>Director:</strong> ${movie.director}`;
 
     const actors = document.createElement('p');
-    actors.textContent = `Actors: ${movie.actors.join(', ')}`;
+    actors.innerHTML = `<strong>Actors:</strong> ${movie.actors.join(', ')}`;
 
     const ratingSection = createStarRating(movie.id);
     const commentSection = createCommentSection(movie.id);
 
     const ratingDisplay = document.createElement('p');
     ratingDisplay.classList.add('rating-display');
-    ratingDisplay.textContent = `Rating: ${movie.rating || 'Not yet rated'}`;
+    ratingDisplay.innerHTML = `<strong>Rating:</strong> ${movie.rating || 'Not yet rated'}`;
 
     collapsibleSection.append(
         title,
@@ -86,8 +86,8 @@ const createMovieElement = (movie) => {
         year,
         director,
         actors,
-        ratingSection,
         ratingDisplay,
+        ratingSection,
         commentSection
     );
     //Creating show/hide button
@@ -106,8 +106,8 @@ const createMovieElement = (movie) => {
         }
     });
 
-    container.append(img, showButton, collapsibleSection);
-    return container;
+    movieContainer.append(img, showButton, collapsibleSection);
+    return movieContainer;
 };
 // Define variables for pagination
 let currentPage = 1; // Start on the first page
@@ -163,9 +163,7 @@ const searchHandler = () => {
         return;
     }
 
-    const filteredMovies = data.movies.filter((movie) =>
-        movie.title.toLowerCase().includes(searchTerm)
-    );
+    const filteredMovies = data.movies.filter((movie) =>movie.title.toLowerCase().includes(searchTerm));
 
     dom.movie.innerHTML = '';
 
@@ -179,7 +177,7 @@ const searchHandler = () => {
         dom.movie.appendChild(noMoviesContainer);
     } else {
         displayMovies(filteredMovies);
-    }
+    } 
 };
 
 // Attach event listener to the search icon
@@ -205,9 +203,6 @@ const sortHandler = () => {
         case 'year':
             sortedMovies.sort((a, b) => a.movie_year - b.movie_year);
             break;
-        case 'rating':
-            sortedMovies.sort((a, b) => b.rating - a.rating);
-            break;
         case 'price':
             sortedMovies.sort((a, b) => a.price - b.price);
             break;
@@ -225,7 +220,7 @@ const filterHandler = () => {
     const filterInput = dom.filterInput.value.trim();
 
     if (!filterInput) {
-        alert('Please enter a value for filtering.');
+        alert('Please enter a valid year or price.');
         return;
     }
 
@@ -242,8 +237,6 @@ const filterHandler = () => {
                 return movie.movie_year === filterValue;
             case 'price':
                 return movie.price <= filterValue;
-            case 'rating':
-                return movie.rating >= filterValue;
             default:
                 return true;
         }
@@ -294,7 +287,7 @@ const createStarRating = (movieId) => {
 const submitRating = (movieId, rating) => {
     const movieContainer = document.querySelector(`.movie[data-id="${movieId}"]`);
     const ratingDisplay = movieContainer.querySelector('.rating-display');
-    ratingDisplay.textContent = `Rating: ${rating} / 5`;
+    ratingDisplay.innerHTML = `<strong>Rating:</strong> ${rating} / 5`;
 
     const stars = movieContainer.querySelectorAll('.star');
     stars.forEach((star) => {
